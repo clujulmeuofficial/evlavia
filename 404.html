@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 – Pagină negăsită · Evlavia Cluj</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+    .error-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .error-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(184,151,90,.07) 0%, transparent 70%);
+    }
+    .error-number {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(18rem, 40vw, 32rem);
+      font-weight: 700;
+      color: rgba(184,151,90,.05);
+      line-height: 1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -.05em;
+    }
+    .error-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      animation: fadeUp .8s ease both;
+      max-width: 560px;
+    }
+    .error-cross {
+      font-size: 2.5rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+    .error-code {
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+      animation: fadeUp .7s ease .1s both;
+    }
+    .error-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      animation: fadeUp .7s ease .2s both;
+    }
+    .error-title em { color: var(--gold-light); font-style: italic; }
+    .error-verse {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(247,243,236,.4);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      animation: fadeUp .7s ease .3s both;
+    }
+    .error-verse span {
+      display: block;
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(184,151,90,.5);
+      font-style: normal;
+      margin-top: .5rem;
+    }
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .7s ease .4s both;
+    }
+    .error-divider {
+      width: 40px;
+      height: 1px;
+      background: rgba(184,151,90,.3);
+      margin: 1.5rem auto;
+      animation: fadeUp .7s ease .25s both;
+    }
+    footer { background: rgba(0,0,0,.3); border-top: 1px solid rgba(184,151,90,.1); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" style="background:rgba(30,26,20,.95);">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="live.html">LIVE</a></li>
+      <li><a href="arhiva.html">Arhivă Video</a></li>
+      <li><a href="despre.html">Despre Noi</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donatie.html" class="nav-donate">Donează</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="error-page">
+  <div class="error-bg"></div>
+  <div class="error-number">404</div>
+  <div class="error-content">
+    <span class="error-cross">✝</span>
+    <span class="error-code">Eroare 404</span>
+    <h1 class="error-title">Pagina nu a <em>fost găsită</em></h1>
+    <div class="error-divider"></div>
+    <p class="error-verse">
+      „Eu sunt calea, adevărul și viața."
+      <span>Ioan 14:6</span>
+    </p>
+    <p style="color:rgba(247,243,236,.3); font-size:.88rem; margin-bottom:2rem; animation: fadeUp .7s ease .35s both;">
+      Pagina pe care o cauți nu există sau a fost mutată.<br/>Întoarce-te pe drumul cel bun.
+    </p>
+    <div class="error-actions">
+      <a href="index.html" class="btn btn-gold">← Înapoi acasă</a>
+      <a href="contact.html" class="btn btn-outline" style="border-color:rgba(184,151,90,.4);color:rgba(247,243,236,.5);">Contact</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner" style="padding:2rem;">
+    <p class="footer-copy">© 2025 Biserica Evlavia Cluj</p>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () =>
+    document.getElementById && document.querySelector('.navbar')?.classList.toggle('scrolled', window.scrollY > 40));
+</script>
+</body>
+</html>
