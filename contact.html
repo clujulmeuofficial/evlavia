@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evlavia Cluj – Contact</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .contact-page { padding-top: 70px; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info-block { }
+    .contact-item {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+      align-items: flex-start;
+    }
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(184,151,90,.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+    .contact-item-text h4 {
+      font-family: 'Jost', sans-serif;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .35rem;
+    }
+    .contact-item-text p, .contact-item-text a {
+      font-size: .95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .contact-item-text a:hover { color: var(--gold); }
+
+    .map-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      height: 420px;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    .contact-form-section {
+      background: var(--charcoal);
+      padding: 5rem 2rem;
+    }
+    .contact-form-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .contact-form-inner h2 { color: var(--cream); margin-bottom: .5rem; }
+    .contact-form-inner p { color: rgba(247,243,236,.45); margin-bottom: 2.5rem; font-size: .9rem; }
+    .cf-group { margin-bottom: 1.3rem; }
+    .cf-group label {
+      display: block;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(247,243,236,.5);
+      font-weight: 500;
+      margin-bottom: .45rem;
+    }
+    .cf-group input, .cf-group textarea {
+      width: 100%;
+      padding: .8rem 1rem;
+      background: rgba(255,255,255,.06);
+      border: 1.5px solid rgba(184,151,90,.2);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      resize: vertical;
+      transition: border-color var(--transition);
+    }
+    .cf-group input:focus, .cf-group textarea:focus { border-color: var(--gold); }
+    .cf-group input::placeholder, .cf-group textarea::placeholder { color: rgba(247,243,236,.2); }
+    #formSuccess {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: var(--gold-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+    }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .map-wrap { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="live.html">LIVE</a></li>
+      <li><a href="arhiva.html">Arhivă Video</a></li>
+      <li><a href="despre.html">Despre Noi</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="donatie.html" class="nav-donate">Donează</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="contact-page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <span class="section-label" style="display:flex;justify-content:center;">Suntem aici pentru tine</span>
+      <h1>Ia <em>legătura</em></h1>
+      <p>Scrie-ne sau vino să ne vizitezi</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="contact-grid">
+      <div class="contact-info-block">
+        <span class="section-label">Informații de contact</span>
+        <h2 style="margin-bottom:2.5rem;">Suntem bucuroși<br/>să te întâlnim</h2>
+
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div class="contact-item-text">
+            <h4>Email</h4>
+            <a href="mailto:contact@evlaviacluj.ro">contact@evlaviacluj.ro</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-item-text">
+            <h4>Adresă</h4>
+            <p>Strada Exemplu nr. 10<br/>Cluj-Napoca, România</p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-item-text">
+            <h4>Telefon</h4>
+            <a href="tel:+40700000000">+40 700 000 000</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🕙</div>
+          <div class="contact-item-text">
+            <h4>Program servicii</h4>
+            <p>Duminică: 10:00 &amp; 18:00<br/>Miercuri: 19:00</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="map-wrap">
+          <!--
+            Înlocuiește src-ul de mai jos cu link-ul tău de embed din Google Maps:
+            1. Deschide maps.google.com
+            2. Caută adresa ta
+            3. Share → Embed a map → copiază src-ul
+          -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2732.0!2d23.5899!3d46.7712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDbCsDQ2JzE2LjMiTiAyM8KwMzUnMjMuNiJF!5e0!3m2!1sro!2sro!4v1"
+            allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <p style="font-size:.78rem; color:var(--text-light); margin-top:.75rem; text-align:center;">
+          ✝ Actualizează adresa în codul sursă al paginii cu locația exactă a bisericii
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formular contact -->
+  <div class="contact-form-section">
+    <div class="contact-form-inner">
+      <span class="section-label" style="color:var(--gold-light);">Scrie-ne</span>
+      <h2>Trimite un mesaj</h2>
+      <p>Vom reveni cu răspuns în cel mai scurt timp posibil</p>
+
+      <div id="contactForm">
+        <div class="cf-group">
+          <label>Nume complet</label>
+          <input type="text" id="cfNume" placeholder="Ion Ionescu"/>
+        </div>
+        <div class="cf-group">
+          <label>Email</label>
+          <input type="email" id="cfEmail" placeholder="email@exemplu.ro"/>
+        </div>
+        <div class="cf-group">
+          <label>Mesaj</label>
+          <textarea id="cfMesaj" rows="5" placeholder="Scrie mesajul tău..."></textarea>
+        </div>
+        <button class="btn btn-gold" onclick="trimiteMesaj()" id="cfBtn">Trimite mesajul</button>
+      </div>
+
+      <div id="formSuccess">
+        ✝ Mulțumim! Mesajul tău a fost trimis cu succes.
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Evlavia <span>Cluj</span></div>
+    <nav class="footer-links">
+      <a href="index.html">Acasă</a><a href="live.html">LIVE</a>
+      <a href="arhiva.html">Arhivă</a><a href="donatie.html">Donează</a>
+    </nav>
+    <div class="footer-sep"></div>
+    <p class="footer-copy">© 2025 Biserica Evlavia Cluj</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { db } from './firebase-config.js';
+  import { collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40));
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open'));
+
+  window.trimiteMesaj = async function() {
+    const nume  = document.getElementById('cfNume').value.trim();
+    const email = document.getElementById('cfEmail').value.trim();
+    const mesaj = document.getElementById('cfMesaj').value.trim();
+    if (!nume || !email || !mesaj) return alert('Te rugăm completează toate câmpurile.');
+    const btn = document.getElementById('cfBtn');
+    btn.disabled = true;
+    btn.textContent = 'Se trimite...';
+    try {
+      await addDoc(collection(db, 'mesaje'), {
+        nume, email, mesaj, createdAt: serverTimestamp()
+      });
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    } catch(err) {
+      alert('Eroare la trimitere: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Trimite mesajul';
+    }
+  };
+</script>
+</body>
+</html>

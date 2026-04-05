@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evlavia Cluj – Admin</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background: #f0ebe2; }
+    .admin-wrap { padding-top: 70px; min-height: 100vh; }
+
+    /* Login */
+    .login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 70px);
+      padding: 2rem;
+    }
+    .login-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      animation: fadeUp .5s ease;
+    }
+    .login-cross { font-size: 2.5rem; color: var(--gold); margin-bottom: 1rem; }
+    .login-card h2 { font-size: 2rem; margin-bottom: .4rem; }
+    .login-card p { color: var(--text-light); font-size: .88rem; margin-bottom: 2rem; }
+    .login-err { color: #c0392b; font-size: .82rem; margin-top: .5rem; min-height: 1.2em; }
+
+    /* Dashboard */
+    .dashboard { display: none; }
+    .admin-topbar {
+      background: var(--charcoal);
+      padding: .75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .admin-topbar span { color: rgba(247,243,236,.6); font-size: .82rem; }
+    .admin-topbar strong { color: var(--gold-light); }
+
+    .admin-main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .admin-header h1 { font-size: 2.5rem; }
+
+    /* Tabel anunțuri */
+    .anunt-table-wrap {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .anunt-table-head {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 120px;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--cream-dark);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      font-weight: 600;
+    }
+    .anunt-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 120px;
+      gap: 1rem;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(184,151,90,.1);
+      align-items: center;
+      transition: background var(--transition);
+      animation: fadeUp .4s ease both;
+    }
+    .anunt-row:last-child { border-bottom: none; }
+    .anunt-row:hover { background: #faf8f4; }
+    .anunt-row-title { font-weight: 500; font-size: .9rem; color: var(--charcoal); }
+    .anunt-row-desc { font-size: .82rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .anunt-row-date { font-size: .78rem; color: var(--gold); }
+    .anunt-actions { display: flex; gap: .5rem; }
+    .act-btn {
+      padding: .35rem .7rem;
+      border-radius: 4px;
+      border: none;
+      font-size: .72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: .06em;
+    }
+    .act-edit { background: rgba(184,151,90,.15); color: var(--gold-dark); }
+    .act-edit:hover { background: var(--gold); color: var(--white); }
+    .act-del { background: rgba(192,57,43,.1); color: #c0392b; }
+    .act-del:hover { background: #c0392b; color: var(--white); }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+    }
+
+    /* Modal form */
+    .modal-title { margin-bottom: 1.5rem; }
+    .img-preview {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin-top: .5rem;
+      display: none;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: .9rem 1.5rem;
+      border-radius: 8px;
+      font-size: .88rem;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      border-left: 3px solid var(--gold);
+      animation: fadeUp .3s ease;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .anunt-table-head,
+      .anunt-row { grid-template-columns: 1fr 80px; }
+      .anunt-table-head > *:nth-child(2),
+      .anunt-table-head > *:nth-child(3),
+      .anunt-row > *:nth-child(2),
+      .anunt-row > *:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <span style="font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold);">Panou Admin</span>
+  </div>
+</nav>
+
+<div class="admin-wrap">
+
+  <!-- ═══ LOGIN SCREEN ═══ -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-cross">✝</div>
+      <h2>Autentificare</h2>
+      <p>Acces restricționat — panou de administrare Evlavia Cluj</p>
+      <div class="form-group" style="text-align:left;">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="admin@evlaviacluj.ro" autocomplete="email"/>
+      </div>
+      <div class="form-group" style="text-align:left;">
+        <label>Parolă</label>
+        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') doLogin()"/>
+      </div>
+      <div class="login-err" id="loginErr"></div>
+      <button class="btn btn-gold" style="width:100%; margin-top:1rem;" onclick="doLogin()" id="loginBtn">
+        Intră în cont
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="dashboard" id="dashboard">
+    <div class="admin-topbar">
+      <span>Conectat ca <strong id="adminEmail"></strong></span>
+      <button class="btn btn-outline" style="padding:.35rem 1rem; font-size:.72rem;" onclick="doLogout()">
+        Deconectare
+      </button>
+    </div>
+
+    <div class="admin-main">
+      <div class="admin-header">
+        <div>
+          <span class="section-label">Panou de control</span>
+          <h1>Anunțuri</h1>
+        </div>
+        <button class="btn btn-gold" onclick="openModal()">+ Anunț nou</button>
+      </div>
+
+      <div class="anunt-table-wrap">
+        <div class="anunt-table-head">
+          <span>Titlu</span>
+          <span>Descriere</span>
+          <span>Data</span>
+          <span>Acțiuni</span>
+        </div>
+        <div id="anuntList">
+          <div class="empty-state">Se încarcă...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /admin-wrap -->
+
+<!-- ═══ MODAL ADD/EDIT ═══ -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;" onclick="closeModalOutside(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3 class="modal-title" id="modalTitle">Anunț nou</h3>
+    <input type="hidden" id="editId"/>
+    <div class="form-group">
+      <label>Titlu *</label>
+      <input type="text" id="fTitlu" placeholder="Titlul anunțului"/>
+    </div>
+    <div class="form-group">
+      <label>Descriere *</label>
+      <textarea id="fDesc" rows="4" placeholder="Descrierea anunțului..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>URL Imagine (opțional)</label>
+      <input type="url" id="fImg" placeholder="https://..." oninput="previewImg()"/>
+      <img id="imgPreview" class="img-preview" alt="preview"/>
+    </div>
+    <div class="form-error" id="formErr"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Anulează</button>
+      <button class="btn btn-gold" onclick="saveAnunt()" id="saveBtn">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ FIREBASE ═══ -->
+<script type="module">
+  import { db, auth } from './firebase-config.js';
+  import {
+    collection, addDoc, updateDoc, deleteDoc,
+    getDocs, doc, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import {
+    signInWithEmailAndPassword, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40));
+
+  // ── Auth state ────────────────────────────────────────────
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('adminEmail').textContent = user.email;
+      loadAnunturi();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('dashboard').style.display = 'none';
+    }
+  });
+
+  // ── Login ─────────────────────────────────────────────────
+  window.doLogin = async function() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass  = document.getElementById('loginPass').value;
+    const btn   = document.getElementById('loginBtn');
+    const err   = document.getElementById('loginErr');
+    err.textContent = '';
+    if (!email || !pass) { err.textContent = 'Completează email și parolă.'; return; }
+    btn.disabled = true; btn.textContent = 'Se conectează...';
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch(e) {
+      err.textContent = e.code === 'auth/invalid-credential'
+        ? 'Email sau parolă incorectă.' : e.message;
+      btn.disabled = false; btn.textContent = 'Intră în cont';
+    }
+  };
+
+  window.doLogout = async function() {
+    await signOut(auth);
+  };
+
+  // ── Load anunțuri ─────────────────────────────────────────
+  async function loadAnunturi() {
+    const list = document.getElementById('anuntList');
+    list.innerHTML = '<div class="empty-state">Se încarcă...</div>';
+    try {
+      const snap = await getDocs(query(collection(db,'anunturi'), orderBy('createdAt','desc')));
+      if (snap.empty) {
+        list.innerHTML = '<div class="empty-state">Nu există anunțuri. Adaugă primul!</div>';
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach((docSnap, idx) => {
+        const d = docSnap.data();
+        const date = d.createdAt?.toDate
+          ? d.createdAt.toDate().toLocaleDateString('ro-RO',{day:'numeric',month:'short',year:'numeric'})
+          : '—';
+        const row = document.createElement('div');
+        row.className = 'anunt-row';
+        row.style.animationDelay = `${idx*0.06}s`;
+        row.innerHTML = `
+          <div class="anunt-row-title">${d.titlu}</div>
+          <div class="anunt-row-desc">${d.descriere}</div>
+          <div class="anunt-row-date">${date}</div>
+          <div class="anunt-actions">
+            <button class="act-btn act-edit" onclick="editAnunt('${docSnap.id}')">Editează</button>
+            <button class="act-btn act-del"  onclick="delAnunt('${docSnap.id}')">Șterge</button>
+          </div>`;
+        list.appendChild(row);
+      });
+    } catch(err) {
+      list.innerHTML = `<div class="empty-state" style="color:#c0392b;">Eroare: ${err.message}</div>`;
+    }
+  }
+
+  // ── Modal helpers ─────────────────────────────────────────
+  window.openModal = function(id='', titlu='', desc='', img='') {
+    document.getElementById('editId').value    = id;
+    document.getElementById('fTitlu').value    = titlu;
+    document.getElementById('fDesc').value     = desc;
+    document.getElementById('fImg').value      = img;
+    document.getElementById('formErr').textContent = '';
+    document.getElementById('modalTitle').textContent = id ? 'Editează anunțul' : 'Anunț nou';
+    document.getElementById('saveBtn').textContent    = id ? 'Salvează modificările' : 'Adaugă anunțul';
+    previewImg();
+    document.getElementById('modalOverlay').style.display = 'flex';
+  };
+
+  window.closeModal = function() {
+    document.getElementById('modalOverlay').style.display = 'none';
+  };
+
+  window.closeModalOutside = function(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  };
+
+  window.previewImg = function() {
+    const url = document.getElementById('fImg').value.trim();
+    const prev = document.getElementById('imgPreview');
+    prev.src = url;
+    prev.style.display = url ? 'block' : 'none';
+  };
+
+  // ── Save ──────────────────────────────────────────────────
+  window.saveAnunt = async function() {
+    const id    = document.getElementById('editId').value;
+    const titlu = document.getElementById('fTitlu').value.trim();
+    const desc  = document.getElementById('fDesc').value.trim();
+    const img   = document.getElementById('fImg').value.trim();
+    const errEl = document.getElementById('formErr');
+    errEl.textContent = '';
+    if (!titlu || !desc) { errEl.textContent = 'Titlul și descrierea sunt obligatorii.'; return; }
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true; btn.textContent = 'Se salvează...';
+    try {
+      if (id) {
+        await updateDoc(doc(db,'anunturi',id), { titlu, descriere:desc, imagine:img });
+        showToast('✓ Anunț actualizat cu succes!');
+      } else {
+        await addDoc(collection(db,'anunturi'), {
+          titlu, descriere:desc, imagine:img, createdAt: serverTimestamp()
+        });
+        showToast('✓ Anunț adăugat cu succes!');
+      }
+      closeModal();
+      loadAnunturi();
+    } catch(e) {
+      errEl.textContent = 'Eroare: ' + e.message;
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  // ── Edit ──────────────────────────────────────────────────
+  window.editAnunt = async function(id) {
+    try {
+      const snap = await getDocs(query(collection(db,'anunturi'), orderBy('createdAt','desc')));
+      snap.forEach(d => {
+        if (d.id === id) {
+          const data = d.data();
+          openModal(id, data.titlu, data.descriere, data.imagine || '');
+        }
+      });
+    } catch(e) { showToast('Eroare la încărcare: ' + e.message); }
+  };
+
+  // ── Delete ────────────────────────────────────────────────
+  window.delAnunt = async function(id) {
+    if (!confirm('Ești sigur că vrei să ștergi acest anunț?')) return;
+    try {
+      await deleteDoc(doc(db,'anunturi',id));
+      showToast('✓ Anunț șters.');
+      loadAnunturi();
+    } catch(e) { showToast('Eroare la ștergere: ' + e.message); }
+  };
+
+  // ── Toast ─────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.style.display = 'none', 3000);
+  }
+</script>
+</body>
+</html>

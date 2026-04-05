@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evlavia Cluj – Arhivă Video</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .arhiva-page { padding-top: 70px; }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+    .video-card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+      animation: fadeUp .5s ease both;
+    }
+    .video-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .video-thumb {
+      position: relative;
+      padding-bottom: 56.25%;
+      background: var(--charcoal);
+      cursor: pointer;
+    }
+    .video-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .video-card:hover .video-thumb img { transform: scale(1.03); }
+    .play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30,26,20,.35);
+      transition: background var(--transition);
+    }
+    .video-card:hover .play-btn { background: rgba(30,26,20,.55); }
+    .play-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--transition);
+    }
+    .video-card:hover .play-icon { transform: scale(1.1); }
+    .play-icon svg { margin-left: 3px; }
+
+    .video-iframe-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      background: #000;
+    }
+    .video-iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-info { padding: 1.25rem 1.4rem; }
+    .video-date {
+      font-size: .72rem;
+      color: var(--gold);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .video-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--charcoal);
+      line-height: 1.3;
+      font-weight: 600;
+    }
+
+    .yt-config {
+      background: var(--cream-dark);
+      border: 1px solid rgba(184,151,90,.2);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+    .yt-config .form-group { flex: 1; min-width: 200px; margin: 0; }
+    .yt-config label {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--warm-grey);
+      font-weight: 500;
+      display: block;
+      margin-bottom: .4rem;
+    }
+    .yt-config input {
+      width: 100%;
+      padding: .65rem .9rem;
+      border: 1.5px solid rgba(184,151,90,.25);
+      border-radius: var(--radius);
+      font-family: 'Jost', sans-serif;
+      font-size: .88rem;
+      background: var(--white);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .yt-config input:focus { border-color: var(--gold); }
+
+    .filter-bar {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .45rem 1.1rem;
+      border-radius: 30px;
+      border: 1.5px solid rgba(184,151,90,.3);
+      background: transparent;
+      color: var(--warm-grey);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white);
+    }
+    .error-msg { color: #c0392b; font-size: .88rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="live.html">LIVE</a></li>
+      <li><a href="arhiva.html" class="active">Arhivă Video</a></li>
+      <li><a href="despre.html">Despre Noi</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donatie.html" class="nav-donate">Donează</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="arhiva-page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <span class="section-label" style="justify-content:center; display:flex;">Predici &amp; Mesaje</span>
+      <h1>Arhivă <em>Video</em></h1>
+      <p>Toate mesajele noastre, disponibile oricând</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <!-- Config API Key (vizibil doar adminului) -->
+    <div class="yt-config" id="ytConfig" style="display:none;">
+      <div class="form-group">
+        <label>YouTube API Key</label>
+        <input type="text" id="apiKeyInput" placeholder="AIza..."/>
+      </div>
+      <div class="form-group">
+        <label>Channel ID</label>
+        <input type="text" id="channelInput" placeholder="UCxxxxxxxxxx"/>
+      </div>
+      <button class="btn btn-gold" onclick="saveAndLoad()">Salvează &amp; Încarcă</button>
+    </div>
+
+    <div class="filter-bar" id="filterBar" style="display:none;">
+      <button class="filter-btn active" data-filter="all">Toate</button>
+      <button class="filter-btn" data-filter="predica">Predici</button>
+      <button class="filter-btn" data-filter="worship">Worship</button>
+      <button class="filter-btn" data-filter="special">Evenimente speciale</button>
+    </div>
+
+    <div id="videoGrid" class="video-grid">
+      <div style="grid-column:1/-1; text-align:center;">
+        <div class="spinner"></div>
+        <p style="color:var(--text-light); font-size:.88rem; margin-top:1rem;">Se încarcă videoclipurile...</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Evlavia <span>Cluj</span></div>
+    <nav class="footer-links">
+      <a href="index.html">Acasă</a><a href="live.html">LIVE</a>
+      <a href="contact.html">Contact</a><a href="donatie.html">Donează</a>
+    </nav>
+    <div class="footer-sep"></div>
+    <p class="footer-copy">© 2025 Biserica Evlavia Cluj</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { db, auth } from './firebase-config.js';
+  import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40));
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open'));
+
+  let apiKey = '', channelId = '', allVideos = [];
+
+  // Arată config doar admin
+  onAuthStateChanged(auth, user => {
+    if (user) document.getElementById('ytConfig').style.display = 'flex';
+  });
+
+  // Citește config din Firestore
+  async function loadConfig() {
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'youtube'));
+      if (snap.exists()) {
+        const data = snap.data();
+        apiKey = data.apiKey || '';
+        channelId = data.channelId || '';
+        document.getElementById('apiKeyInput').value = apiKey;
+        document.getElementById('channelInput').value = channelId;
+      }
+    } catch(e) { console.warn('Config read error', e); }
+  }
+
+  window.saveAndLoad = async function() {
+    apiKey = document.getElementById('apiKeyInput').value.trim();
+    channelId = document.getElementById('channelInput').value.trim();
+    if (!apiKey || !channelId) return alert('Completează API Key și Channel ID');
+    try {
+      await setDoc(doc(db, 'settings', 'youtube'), { apiKey, channelId });
+    } catch(e) { console.warn('Save error', e); }
+    fetchVideos();
+  };
+
+  async function fetchVideos() {
+    const grid = document.getElementById('videoGrid');
+    if (!apiKey || !channelId) {
+      grid.innerHTML = `<p style="grid-column:1/-1;color:var(--text-light); font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-style:italic; text-align:center; padding:4rem 1rem;">
+        Configurează YouTube API Key și Channel ID din panoul de admin pentru a afișa videoclipurile.</p>`;
+      return;
+    }
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;"><div class="spinner"></div></div>';
+    try {
+      // Preia uploads playlist ID
+      const chanResp = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`);
+      const chanData = await chanResp.json();
+      if (chanData.error) throw new Error(chanData.error.message);
+
+      const uploadsId = chanData.items[0].contentDetails.relatedPlaylists.uploads;
+
+      // Preia videoclipuri (max 50)
+      const vidResp = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${uploadsId}&key=${apiKey}`);
+      const vidData = await vidResp.json();
+      if (vidData.error) throw new Error(vidData.error.message);
+
+      allVideos = vidData.items.map(item => ({
+        id: item.snippet.resourceId.videoId,
+        title: item.snippet.title,
+        thumb: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url,
+        date: new Date(item.snippet.publishedAt).toLocaleDateString('ro-RO',{day:'numeric',month:'long',year:'numeric'})
+      }));
+
+      document.getElementById('filterBar').style.display = 'flex';
+      renderVideos(allVideos);
+    } catch(err) {
+      grid.innerHTML = `<p style="grid-column:1/-1; color:#c0392b; text-align:center;">
+        Eroare la încărcarea videoclipurilor.<br/><small>${err.message}</small></p>`;
+    }
+  }
+
+  function renderVideos(videos) {
+    const grid = document.getElementById('videoGrid');
+    if (!videos.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-light); font-style:italic;">Nu s-au găsit videoclipuri.</p>';
+      return;
+    }
+    grid.innerHTML = '';
+    videos.forEach((v, idx) => {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.style.animationDelay = `${idx * 0.07}s`;
+      card.innerHTML = `
+        <div class="video-thumb" onclick="playVideo(this, '${v.id}')" id="thumb-${v.id}">
+          <img src="${v.thumb}" alt="${v.title}" loading="lazy"/>
+          <div class="play-btn">
+            <div class="play-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M5 3.5l10 5.5-10 5.5V3.5z" fill="white"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-date">${v.date}</div>
+          <div class="video-title">${v.title}</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  window.playVideo = function(el, videoId) {
+    el.innerHTML = `
+      <div class="video-iframe-wrap">
+        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>`;
+  };
+
+  // Filtrare simplă după cuvinte cheie în titlu
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      if (f === 'all') { renderVideos(allVideos); return; }
+      const keywords = { predica: ['predic','mesaj','cuvânt','biblie'],
+                         worship: ['worship','închinare','laudă','muzic'],
+                         special: ['special','crăciun','paști','conferință'] };
+      const filtered = allVideos.filter(v =>
+        keywords[f]?.some(k => v.title.toLowerCase().includes(k)));
+      renderVideos(filtered);
+    });
+  });
+
+  // Init
+  await loadConfig();
+  fetchVideos();
+</script>
+</body>
+</html>

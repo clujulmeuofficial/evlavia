@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evlavia Cluj – LIVE</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .live-page { padding-top: 70px; background: var(--charcoal); min-height: 100vh; }
+    .live-header {
+      text-align: center;
+      padding: 4rem 2rem 2.5rem;
+      position: relative;
+    }
+    .live-header h1 { color: var(--cream); font-size: clamp(2.5rem,6vw,4.5rem); }
+    .live-header p { color: rgba(247,243,236,.45); margin-top: .75rem; font-size: .9rem; letter-spacing: .08em; }
+    .live-badge-wrap { margin-bottom: 1.5rem; }
+
+    .live-frame-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .live-embed {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+    }
+    .live-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .live-info {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .live-info-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(184,151,90,.15);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .live-info-card .icon { font-size: 1.8rem; margin-bottom: .75rem; }
+    .live-info-card h4 {
+      color: var(--gold-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      margin-bottom: .4rem;
+    }
+    .live-info-card p { color: rgba(247,243,236,.4); font-size: .82rem; line-height: 1.5; }
+
+    .live-config {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+      text-align: center;
+    }
+    .live-config label {
+      display: block;
+      color: rgba(247,243,236,.5);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .live-config input {
+      width: 100%;
+      padding: .7rem 1rem;
+      background: rgba(255,255,255,.05);
+      border: 1.5px solid rgba(184,151,90,.2);
+      border-radius: var(--radius);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color var(--transition);
+    }
+    .live-config input:focus { border-color: var(--gold); }
+    .live-config small { color: rgba(247,243,236,.3); font-size: .75rem; display: block; margin-top: -.5rem; margin-bottom: 1rem; }
+    @media (max-width: 600px) { .live-info { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar" style="background:rgba(30,26,20,.95);">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="live.html" class="active">LIVE</a></li>
+      <li><a href="arhiva.html">Arhivă Video</a></li>
+      <li><a href="despre.html">Despre Noi</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donatie.html" class="nav-donate">Donează</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="live-page">
+  <div class="live-header">
+    <div class="live-badge-wrap">
+      <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+    </div>
+    <h1>Transmisie <em style="color:var(--gold-light); font-style:italic;">în Direct</em></h1>
+    <p>Urmărește serviciul nostru în timp real · Duminică 10:00</p>
+  </div>
+
+  <div class="live-frame-wrap">
+    <div class="live-embed">
+      <iframe id="liveIframe"
+        src="https://www.youtube.com/embed/live_stream?channel=CHANNEL_ID_AICI&autoplay=1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Admin poate schimba Channel ID -->
+  <div class="live-config" id="liveConfig" style="display:none;">
+    <label>YouTube Channel ID</label>
+    <input type="text" id="channelIdInput" placeholder="UCxxxxxxxxxxxxxxxx"/>
+    <small>Găsești Channel ID în setările YouTube ale canalului tău</small>
+    <button class="btn btn-gold" onclick="updateLive()">Actualizează</button>
+  </div>
+
+  <div class="live-info">
+    <div class="live-info-card">
+      <div class="icon">🕙</div>
+      <h4>Duminică</h4>
+      <p>Serviciu principal la 10:00<br/>Seară de rugăciune la 18:00</p>
+    </div>
+    <div class="live-info-card">
+      <div class="icon">📖</div>
+      <h4>Miercuri</h4>
+      <p>Studiu biblic la 19:00<br/>Online și la biserică</p>
+    </div>
+    <div class="live-info-card">
+      <div class="icon">🎵</div>
+      <h4>Arhivă</h4>
+      <p>Toate predicile sunt disponibile<br/><a href="arhiva.html" style="color:var(--gold-light);">în arhiva noastră video</a></p>
+    </div>
+  </div>
+</main>
+
+<footer style="background:#111;">
+  <div class="footer-inner">
+    <div class="footer-logo">Evlavia <span>Cluj</span></div>
+    <nav class="footer-links">
+      <a href="index.html">Acasă</a><a href="arhiva.html">Arhivă</a>
+      <a href="contact.html">Contact</a><a href="donatie.html">Donează</a>
+    </nav>
+    <div class="footer-sep"></div>
+    <p class="footer-copy">© 2025 Biserica Evlavia Cluj</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { auth } from './firebase-config.js';
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40));
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open'));
+
+  // Arată input channel ID doar adminului
+  onAuthStateChanged(auth, user => {
+    if (user) document.getElementById('liveConfig').style.display = 'block';
+  });
+
+  window.updateLive = function() {
+    const id = document.getElementById('channelIdInput').value.trim();
+    if (!id) return;
+    document.getElementById('liveIframe').src =
+      `https://www.youtube.com/embed/live_stream?channel=${id}&autoplay=1`;
+  };
+</script>
+</body>
+</html>

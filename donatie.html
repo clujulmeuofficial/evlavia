@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evlavia Cluj – Donează</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .donatie-page { padding-top: 70px; }
+    .donate-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .donate-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+      border-top: 3px solid var(--gold);
+      animation: fadeUp .5s ease both;
+    }
+    .donate-card h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+    .donate-card p { color: var(--text-light); font-size: .9rem; line-height: 1.7; margin-bottom: 1rem; }
+    .iban-block {
+      background: var(--cream-dark);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-family: 'Jost', monospace;
+      font-size: .9rem;
+      color: var(--charcoal);
+      letter-spacing: .06em;
+      margin-top: .5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .copy-btn {
+      background: none;
+      border: 1px solid rgba(184,151,90,.4);
+      border-radius: 4px;
+      padding: .3rem .7rem;
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: var(--gold);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: var(--gold); color: var(--white); }
+
+    .why-donate {
+      background: var(--charcoal);
+      padding: 5rem 2rem;
+    }
+    .why-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .why-inner h2 { color: var(--cream); margin-bottom: 1rem; }
+    .why-inner p { color: rgba(247,243,236,.45); max-width: 580px; margin: 0 auto 3rem; font-size: .95rem; line-height: 1.8; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .why-item {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(184,151,90,.12);
+      border-radius: 8px;
+      padding: 1.75rem;
+    }
+    .why-item .icon { font-size: 2rem; margin-bottom: .75rem; }
+    .why-item h4 { color: var(--gold-light); font-family: 'Cormorant Garamond',serif; font-size: 1.2rem; margin-bottom: .4rem; }
+    .why-item p { color: rgba(247,243,236,.35); font-size: .82rem; line-height: 1.55; }
+
+    @media (max-width: 768px) {
+      .donate-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-cross">✝</span>
+      <span class="logo-text">Evlavia <em>Cluj</em></span>
+    </a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="live.html">LIVE</a></li>
+      <li><a href="arhiva.html">Arhivă Video</a></li>
+      <li><a href="despre.html">Despre Noi</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="donatie.html" class="nav-donate active">Donează</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="donatie-page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <span class="section-label" style="display:flex;justify-content:center;">Susține lucrarea</span>
+      <h1>Dăruiește cu <em>bucurie</em></h1>
+      <p>„Fiecare să dea după cum a hotărât în inima lui" — 2 Corinteni 9:7</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="donate-grid">
+      <div>
+        <div class="donate-card" style="animation-delay:.0s">
+          <span class="section-label">Transfer bancar</span>
+          <h3>Cont bancar</h3>
+          <p>Poți dona prin transfer bancar direct în contul bisericii. Menționează „Donație" la detaliile plății.</p>
+          <div>
+            <p style="font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-weight:500; margin-bottom:.4rem;">IBAN Lei (RON)</p>
+            <div class="iban-block">
+              <span>RO00 BACX 0000 0000 0000 0000</span>
+              <button class="copy-btn" onclick="copyText('RO00 BACX 0000 0000 0000 0000', this)">Copiază</button>
+            </div>
+          </div>
+          <p style="margin-top:1rem; font-size:.82rem; color:var(--text-light);">
+            Titular: <strong style="color:var(--text);">Asociația Evlavia Cluj</strong><br/>
+            Bancă: Banca Transilvania
+          </p>
+        </div>
+
+        <div class="donate-card" style="animation-delay:.15s">
+          <span class="section-label">Online</span>
+          <h3>Donație online</h3>
+          <p>Poți dona rapid și sigur prin platformele de plată online. Alegem soluția potrivită pentru comunitatea noastră.</p>
+          <a href="mailto:contact@evlaviacluj.ro?subject=Donatie online" class="btn btn-gold">
+            Contactează-ne pentru detalii
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div style="padding: 3rem 0; text-align:center;">
+          <div style="font-size:5rem; margin-bottom:1.5rem; opacity:.6;">🤲</div>
+          <span class="section-label" style="display:flex;justify-content:center;">Mulțumim</span>
+          <h2 style="margin-bottom:1rem;">Fiecare donație<br/>contează</h2>
+          <p style="color:var(--text-light); line-height:1.8; font-size:.95rem;">
+            Prin generozitatea ta contribui la predicarea Evangheliei, susținerea familiilor, programele pentru copii și tineret, și misiunile noastre locale și internaționale.
+          </p>
+          <div style="margin-top:2rem; padding:1.5rem; background:var(--cream-dark); border-radius:8px; border-left:3px solid var(--gold);">
+            <p style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-style:italic; color:var(--charcoal); margin:0;">
+              „Cel ce seamănă cu zgârcenie va secera cu zgârcenie; și cel ce seamănă cu dărnicie va secera cu dărnicie."
+            </p>
+            <p style="font-size:.75rem; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; margin-top:.75rem; margin-bottom:0;">2 Corinteni 9:6</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-donate">
+    <div class="why-inner">
+      <span class="section-label" style="display:flex;justify-content:center;color:var(--gold-light);">Unde ajung donațiile</span>
+      <h2>Lucrarea ta susține</h2>
+      <p>Fiecare leu donat este folosit cu responsabilitate pentru a înainta Împărăția lui Dumnezeu</p>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="icon">📖</div>
+          <h4>Predica &amp; Misiune</h4>
+          <p>Susținem propovăduirea Evangheliei în Cluj și în misiunile internaționale</p>
+        </div>
+        <div class="why-item">
+          <div class="icon">👨‍👩‍👧‍👦</div>
+          <h4>Programe sociale</h4>
+          <p>Ajutăm familii în nevoie și susținem copii prin programele noastre comunitare</p>
+        </div>
+        <div class="why-item">
+          <div class="icon">🏛️</div>
+          <h4>Infrastructură</h4>
+          <p>Menținem și dezvoltăm spațiile unde comunitatea se poate aduna</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Evlavia <span>Cluj</span></div>
+    <nav class="footer-links">
+      <a href="index.html">Acasă</a><a href="live.html">LIVE</a>
+      <a href="contact.html">Contact</a><a href="despre.html">Despre noi</a>
+    </nav>
+    <div class="footer-sep"></div>
+    <p class="footer-copy">© 2025 Biserica Evlavia Cluj</p>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40));
+  document.getElementById('hamburger').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open'));
+
+  window.copyText = function(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copiat!';
+      setTimeout(() => btn.textContent = 'Copiază', 2000);
+    });
+  };
+</script>
+</body>
+</html>
